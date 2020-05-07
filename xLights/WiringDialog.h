@@ -57,6 +57,7 @@ class WiringDialog: public wxDialog
     void LeftDown(wxMouseEvent& event);
     void LeftUp(wxMouseEvent& event);
     void Motion(wxMouseEvent& event);
+    void OnZoomGesture(wxZoomGestureEvent& event);
     void MouseWheel(wxMouseEvent& event);
     void Magnify(wxMouseEvent& event);
     void LeftDClick(wxMouseEvent& event);

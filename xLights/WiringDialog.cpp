@@ -93,7 +93,9 @@ WiringDialog::WiringDialog(wxWindow* parent, wxString modelname, wxWindowID id,c
     StaticBitmap_Wiring->Connect(wxEVT_MOUSEWHEEL, (wxObjectEventFunction)& WiringDialog::MouseWheel, nullptr, this);
     StaticBitmap_Wiring->Connect(wxEVT_MAGNIFY, (wxObjectEventFunction)& WiringDialog::Magnify, nullptr, this);
     StaticBitmap_Wiring->Connect(wxEVT_LEFT_DCLICK, (wxObjectEventFunction)& WiringDialog::LeftDClick, nullptr, this);
-
+    StaticBitmap_Wiring->EnableTouchEvents(wxTOUCH_ZOOM_GESTURE);
+    StaticBitmap_Wiring->Connect(wxEVT_GESTURE_ZOOM, (wxObjectEventFunction)& WiringDialog::OnZoomGesture, nullptr, this);
+    
     _modelname = modelname;
 
     wxConfigBase* config = wxConfigBase::Get();
@@ -850,4 +852,30 @@ void WiringDialog::LeftDClick(wxMouseEvent& event)
     _zoom = 1.0;
     _start = wxPoint(0, 0);
     Render();
+}
+
+void WiringDialog::OnZoomGesture(wxZoomGestureEvent& event) {
+    
+    // Every time a new gesture starts this will get set to default gesture
+    // start point before subsequent events are fired and zoom is initiated
+    static float lastFactor;
+    float delta = event.GetZoomFactor() - lastFactor;
+    
+    if (!event.IsGestureStart()) {
+        // avoid zoom on tiny movement which can be unintentional when user intends to stop
+        if (abs(delta) < 0.01f) {
+            return;
+        }
+
+        if (delta < 0) {
+            AdjustZoom(-0.1f, event.GetPosition());
+        }
+        else {
+            AdjustZoom(0.1f, event.GetPosition());
+        }
+        
+        Render();
+    }
+    
+    lastFactor = event.GetZoomFactor();
 }

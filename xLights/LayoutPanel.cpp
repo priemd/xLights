@@ -60,9 +60,11 @@
 #include "ViewsModelsPanel.h"
 #include "outputs/OutputManager.h"
 #include "outputs/Output.h"
-
 #include <log4cpp/Category.hh>
 
+#include <set>
+
+#include <set>
 
 static wxRect scaledRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight)
 {
@@ -443,7 +445,7 @@ LayoutPanel::LayoutPanel(wxWindow* parent, xLightsFrame *xl, wxPanel* sequencer)
 	FlexGridSizerModels->Add(new_panel, 1, wxALL|wxEXPAND, 0);
     PanelModels->SetSizer(FlexGridSizerModels);
     wxSizer* sizer1 = new wxBoxSizer(wxVERTICAL);
-    TreeListViewModels = CreateTreeListCtrl(wxTL_DEFAULT_STYLE, new_panel);
+    TreeListViewModels = CreateTreeListCtrl(wxTL_MULTIPLE, new_panel);
     sizer1->Add(TreeListViewModels, wxSizerFlags(2).Expand());
     new_panel->SetSizer(sizer1);
     sizer1->SetSizeHints(new_panel);
@@ -1150,7 +1152,7 @@ void LayoutPanel::refreshModelList() {
                 wxString endStr = model->GetLastChannelInStartChannelFormat(xlights->GetOutputManager());
                 if (cv != endStr) {
                     data->endingChannel = model->GetLastChannel()+1;
-                    
+
                     SetTreeListViewItemText(item, Col_EndChan, endStr);
                 }
                 cv = TreeListViewModels->GetItemText(item, Col_ControllerConnection);
@@ -1341,7 +1343,7 @@ void LayoutPanel::UpdateModelList(bool full_refresh, std::vector<Model*> &models
     int width = 0;
     if (full_refresh) {
         UnSelectAllModels();
-        
+
         //turn off the sorting as that is ALSO really slow
         TreeListViewModels->SetItemComparator(nullptr);
         if (sorted) {
@@ -2194,7 +2196,7 @@ void LayoutPanel::SelectAllModels()
         auto models = modelPreview->GetModels();
         for (size_t i = 0; i < models.size(); i++)
         {
-            Model* m = modelPreview->GetModels()[i];
+            Model* m = models[i];
 
             if (selectedBaseObject == nullptr)
             {
@@ -2228,6 +2230,25 @@ void LayoutPanel::SelectAllModels()
     xlights->GetOutputModelManager()->AddASAPWork(OutputModelManager::WORK_REDRAW_LAYOUTPREVIEW, "LayoutPanel::SelectAllModels");
 }
 
+void LayoutPanel::SelectModels(const wxTreeListItems& selectedModels)
+{
+    for (auto selectedModel : selectedModels)
+    {
+        wxClientData* ptr = TreeListViewModels->GetItemData( selectedModel );
+        if (ptr == nullptr)
+            continue;
+        ModelTreeData* data = dynamic_cast<ModelTreeData *>( ptr );
+        if (data == nullptr)
+            continue;
+
+        SelectModel(data->GetModel(), false);
+    }
+
+    clearPropGrid();
+
+    xlights->GetOutputModelManager()->AddASAPWork(OutputModelManager::WORK_REDRAW_LAYOUTPREVIEW, "LayoutPanel::SelectModels");
+}
+
 void LayoutPanel::SetupPropGrid(BaseObject *base_object) {
 
     if (base_object == nullptr || propertyEditor == nullptr) return;
@@ -2252,7 +2273,7 @@ void LayoutPanel::SetupPropGrid(BaseObject *base_object) {
     {
         base_object->EnableLayoutGroupProperty(propertyEditor, false);
     }
-    
+
     if (dynamic_cast<SubModel*>(base_object) == nullptr) {
         wxPGProperty *p2 = propertyEditor->Append(new wxPropertyCategory("Size/Location", "ModelSize"));
 
@@ -2412,7 +2433,7 @@ void LayoutPanel::SelectModel(Model *m, bool highlight_tree) {
 
     bool changed = false;
     if (selectedBaseObject != m)
-    { 
+    {
         changed = true;
     }
 
@@ -2597,7 +2618,7 @@ void LayoutPanel::SaveEffects()
     // update xml with offsets and scale
     for (size_t i = 0; i < modelPreview->GetModels().size(); i++)
     {
-        if (xlights->AllModels.IsModelValid(modelPreview->GetModels()[i]) || 
+        if (xlights->AllModels.IsModelValid(modelPreview->GetModels()[i]) ||
             IsNewModel(modelPreview->GetModels()[i])) { // this IsModelValid should not be necessary but we are getting crashes due to invalid models
             modelPreview->GetModels()[i]->UpdateXmlWithScale();
         }
@@ -6533,7 +6554,7 @@ void LayoutPanel::OnChoiceLayoutGroupsSelect(wxCommandEvent& event)
     obj_button->Enable(is_3d && currentLayoutGroup == "Default");
 }
 
-void LayoutPanel::PreviewSaveImage()    
+void LayoutPanel::PreviewSaveImage()
 {
 	wxImage *image = modelPreview->GrabImage();
 	if (image == nullptr)
@@ -6644,9 +6665,9 @@ void LayoutPanel::ImportModelsFromRGBEffects()
                     wxString const smodels = it2->GetModelXml()->GetAttribute("models");
                     auto models = wxSplit(smodels, ',');
 
-                    models.erase(std::remove_if(models.begin(), models.end(), [&](std::string const& s) 
-                        { 
-                            return (xlights->AllModels.GetModel(s) == nullptr); 
+                    models.erase(std::remove_if(models.begin(), models.end(), [&](std::string const& s)
+                        {
+                            return (xlights->AllModels.GetModel(s) == nullptr);
                         }), models.end());
 
                     it2->GetModelXml()->DeleteAttribute("models");
@@ -6976,7 +6997,15 @@ static inline void SetToolTipForTreeList(wxTreeListCtrl *tv, const std::string &
 void LayoutPanel::OnSelectionChanged(wxTreeListEvent& event)
 {
     UnSelectAllModels(false);
-    if( editing_models ) {
+    if (editing_models) {
+        wxTreeListItems selectedItems;
+        unsigned numSelected = TreeListViewModels->GetSelections( selectedItems );
+        if (numSelected > 1)
+        {
+            SelectModels(selectedItems);
+            return;
+        }
+
         wxTreeListItem item = event.GetItem();
         if (item.IsOk()) {
 

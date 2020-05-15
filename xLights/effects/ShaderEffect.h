@@ -42,8 +42,10 @@ enum class ShaderCtrlType
 
 struct ShaderPass
 {
-    wxString _target;
-    bool _persistent;
+    wxString    _target;
+    bool        _persistent;
+    wxString    _width;
+    wxString    _height;
 };
 
 struct ShaderParm
@@ -135,12 +137,12 @@ struct ShaderParm
         return GetId(ctrl).AfterFirst('_');
     }
     wxString GetLabel() const { if (_label != "") return _label; return _name; }
-    bool ShowParm() const 
-    { 
-        return _type == ShaderParmType::SHADER_PARM_FLOAT || 
-            _type == ShaderParmType::SHADER_PARM_BOOL || 
+    bool ShowParm() const
+    {
+        return _type == ShaderParmType::SHADER_PARM_FLOAT ||
+            _type == ShaderParmType::SHADER_PARM_BOOL ||
             _type == ShaderParmType::SHADER_PARM_LONGCHOICE ||
-            _type == ShaderParmType::SHADER_PARM_POINT2D; 
+            _type == ShaderParmType::SHADER_PARM_POINT2D;
     }
 };
 

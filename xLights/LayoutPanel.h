@@ -324,6 +324,12 @@ class LayoutPanel: public wxPanel
         int ModelsSelectedCount() const;
         int ViewObjectsSelectedCount() const;
         int GetSelectedModelIndex() const;
+        int GetModelTreeIndex(wxTreeListItem itemToFind) const;
+        int GetModelTreeIndex(Model* modelToFind) const;
+        void SelectModelInTree(Model* modelToSelect);
+        void SelectBaseObjectInTree(BaseObject* baseObjectToSelect);
+        void UnSelectModelInTree(Model* modelToUnSelect);
+        void UnSelectBaseObjectInTree(BaseObject* baseObjectToUnSelect);
         std::list<BaseObject*> GetSelectedBaseObjects() const;
         void PreviewModelAlignWithGround();
         void PreviewModelAlignTops();
@@ -356,6 +362,9 @@ class LayoutPanel: public wxPanel
         int mNumGroups;
         bool mPropGridActive;
         wxTreeListItem mSelectedGroup;
+        wxTreeListItems mSelectedGroups;
+        wxTreeListItems mSelectedModels;
+        wxTreeListItems mSelectedSubModels;
 
         wxPropertyGrid *propertyEditor = nullptr;
         bool updatingProperty;
@@ -463,6 +472,7 @@ class LayoutPanel: public wxPanel
         bool creating_model;
         bool mouse_state_set;
 
+        
         void OnSelectionChanged(wxTreeListEvent& event);
         void OnItemContextMenu(wxTreeListEvent& event);
 

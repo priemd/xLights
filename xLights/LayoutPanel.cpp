@@ -2241,7 +2241,12 @@ void LayoutPanel::SelectModels(const wxTreeListItems& selectedModels)
         if (data == nullptr)
             continue;
 
-        SelectModel(data->GetModel(), false);
+        // Multi-select should only work with models (no groups or submodels)
+        Model* model = data->GetModel();
+        if ( dynamic_cast<ModelGroup*>(model) != nullptr || dynamic_cast<SubModel*>(model) != nullptr )
+            continue;
+
+        SelectModel(model, false);
     }
 
     clearPropGrid();

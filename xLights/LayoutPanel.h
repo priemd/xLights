@@ -326,10 +326,13 @@ class LayoutPanel: public wxPanel
         int GetSelectedModelIndex() const;
         int GetModelTreeIndex(wxTreeListItem itemToFind) const;
         int GetModelTreeIndex(Model* modelToFind) const;
+        std::vector<Model*> GetSelectedModelsFromGroup(wxTreeListItem groupItem, bool nested = true);
+        std::vector<Model*> GetSelectedModelsForEdit();
         void SelectModelInTree(Model* modelToSelect);
         void SelectBaseObjectInTree(BaseObject* baseObjectToSelect);
         void UnSelectModelInTree(Model* modelToUnSelect);
         void UnSelectBaseObjectInTree(BaseObject* baseObjectToUnSelect);
+        Model* TreeItemToModel(wxTreeListItem treeItem);
         std::list<BaseObject*> GetSelectedBaseObjects() const;
         void PreviewModelAlignWithGround();
         void PreviewModelAlignTops();
@@ -345,6 +348,7 @@ class LayoutPanel: public wxPanel
         void PreviewModelResize(bool sameWidth, bool sameHeight);
         Model *CreateNewModel(const std::string &type) const;
 
+        bool performingUnselect;
         bool _firstTreeLoad;
         bool m_dragging;
         bool m_creating_bound_rect;

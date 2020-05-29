@@ -33,6 +33,7 @@ class wxStaticText;
 
 #include <vector>
 #include <list>
+#include <map>
 
 class xLightsFrame;
 class ModelPreview;
@@ -324,15 +325,18 @@ class LayoutPanel: public wxPanel
         int ModelsSelectedCount() const;
         int ViewObjectsSelectedCount() const;
         int GetSelectedModelIndex() const;
-        int GetModelTreeIndex(wxTreeListItem itemToFind) const;
-        int GetModelTreeIndex(Model* modelToFind) const;
+        Model* GetModelFromTreeItem(wxTreeListItem treeItem);
+        wxTreeListItem GetTreeItemFromModel(Model* model);
         std::vector<Model*> GetSelectedModelsFromGroup(wxTreeListItem groupItem, bool nested = true);
         std::vector<Model*> GetSelectedModelsForEdit();
+        std::multimap<wxString, std::list<wxString>> GetSelectedTreeModelPaths();
+        std::list<wxString> GetTreeItemPath(wxTreeListItem item);
+        wxTreeListItem GetTreeItemBranch(wxTreeListItem parent, wxString branchName);
+        void ReselectTreeModels(std::multimap<wxString, std::list<wxString>> modelPaths);
         void SelectModelInTree(Model* modelToSelect);
         void SelectBaseObjectInTree(BaseObject* baseObjectToSelect);
         void UnSelectModelInTree(Model* modelToUnSelect);
         void UnSelectBaseObjectInTree(BaseObject* baseObjectToUnSelect);
-        Model* TreeItemToModel(wxTreeListItem treeItem);
         std::list<BaseObject*> GetSelectedBaseObjects() const;
         void PreviewModelAlignWithGround();
         void PreviewModelAlignTops();
@@ -348,7 +352,6 @@ class LayoutPanel: public wxPanel
         void PreviewModelResize(bool sameWidth, bool sameHeight);
         Model *CreateNewModel(const std::string &type) const;
 
-        bool performingUnselect;
         bool _firstTreeLoad;
         bool m_dragging;
         bool m_creating_bound_rect;
@@ -374,6 +377,7 @@ class LayoutPanel: public wxPanel
         bool updatingProperty;
         BaseObject *selectedBaseObject = nullptr;
         BaseObject *highlightedBaseObject = nullptr;
+        wxTreeListItem selectedBaseTreeItem = nullptr;
         bool selectionLatched;
         int over_handle;
         glm::vec3 last_centerpos;

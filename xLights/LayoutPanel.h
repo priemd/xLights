@@ -33,7 +33,6 @@ class wxStaticText;
 
 #include <vector>
 #include <list>
-#include <map>
 
 class xLightsFrame;
 class ModelPreview;
@@ -58,7 +57,7 @@ wxDECLARE_EVENT(EVT_LISTITEM_CHECKED, wxCommandEvent);
 class CopyPasteBaseObject
 {
     bool _ok;
-	bool _viewObject;
+    bool _viewObject;
     wxXmlNode* _xmlNode;
 
 public:
@@ -66,7 +65,7 @@ public:
     CopyPasteBaseObject();
     virtual ~CopyPasteBaseObject();
     bool IsOk() const { return _ok; }
-	bool IsViewObject() const { return _viewObject; }
+    bool IsViewObject() const { return _viewObject; }
     wxXmlNode* GetBaseObjectXml() const
     {
         if (_xmlNode == nullptr)
@@ -83,58 +82,58 @@ class LayoutPanel: public wxPanel
 {
     public:
 
-		LayoutPanel(wxWindow* parent, xLightsFrame *xlights, wxPanel* sequencer);
-		virtual ~LayoutPanel();
+        LayoutPanel(wxWindow* parent, xLightsFrame *xlights, wxPanel* sequencer);
+        virtual ~LayoutPanel();
 
-		friend class ViewObjectPanel;
+        friend class ViewObjectPanel;
 
     private:
-		//(*Declarations(LayoutPanel)
-		wxButton* ButtonSavePreview;
-		wxCheckBox* CheckBoxOverlap;
-		wxCheckBox* CheckBox_3D;
-		wxChoice* ChoiceLayoutGroups;
-		wxFlexGridSizer* ToolSizer;
-		wxNotebook* Notebook_Objects;
-		wxPanel* FirstPanel;
-		wxPanel* LeftPanel;
-		wxPanel* PanelModels;
-		wxPanel* PanelObjects;
-		wxPanel* PreviewGLPanel;
-		wxPanel* SecondPanel;
-		wxScrollBar* ScrollBarLayoutHorz;
-		wxScrollBar* ScrollBarLayoutVert;
-		wxSplitterWindow* ModelSplitter;
-		wxSplitterWindow* SplitterWindow2;
-		wxStaticText* StaticText1;
-		//*)
+        //(*Declarations(LayoutPanel)
+        wxButton* ButtonSavePreview;
+        wxCheckBox* CheckBoxOverlap;
+        wxCheckBox* CheckBox_3D;
+        wxChoice* ChoiceLayoutGroups;
+        wxFlexGridSizer* ToolSizer;
+        wxNotebook* Notebook_Objects;
+        wxPanel* FirstPanel;
+        wxPanel* LeftPanel;
+        wxPanel* PanelModels;
+        wxPanel* PanelObjects;
+        wxPanel* PreviewGLPanel;
+        wxPanel* SecondPanel;
+        wxScrollBar* ScrollBarLayoutHorz;
+        wxScrollBar* ScrollBarLayoutVert;
+        wxSplitterWindow* ModelSplitter;
+        wxSplitterWindow* SplitterWindow2;
+        wxStaticText* StaticText1;
+        //*)
 
-		wxScrolledWindow* ViewObjectWindow;
-		wxScrolledWindow* ModelGroupWindow;
-		wxTreeListCtrl* TreeListViewModels;
+        wxScrolledWindow* ViewObjectWindow;
+        wxScrolledWindow* ModelGroupWindow;
+        wxTreeListCtrl* TreeListViewModels;
 
-	protected:
+    protected:
 
-		//(*Identifiers(LayoutPanel)
-		static const long ID_PANEL4;
-		static const long ID_PANEL_Objects;
-		static const long ID_NOTEBOOK_OBJECTS;
-		static const long ID_PANEL3;
-		static const long ID_PANEL2;
-		static const long ID_SPLITTERWINDOW1;
-		static const long ID_CHECKBOXOVERLAP;
-		static const long ID_BUTTON_SAVE_PREVIEW;
-		static const long ID_PANEL5;
-		static const long ID_STATICTEXT1;
-		static const long ID_CHOICE_PREVIEWS;
-		static const long ID_CHECKBOX_3D;
-		static const long ID_SCROLLBAR1;
-		static const long ID_SCROLLBAR2;
-		static const long ID_PANEL1;
-		static const long ID_SPLITTERWINDOW2;
-		//*)
+        //(*Identifiers(LayoutPanel)
+        static const long ID_PANEL4;
+        static const long ID_PANEL_Objects;
+        static const long ID_NOTEBOOK_OBJECTS;
+        static const long ID_PANEL3;
+        static const long ID_PANEL2;
+        static const long ID_SPLITTERWINDOW1;
+        static const long ID_CHECKBOXOVERLAP;
+        static const long ID_BUTTON_SAVE_PREVIEW;
+        static const long ID_PANEL5;
+        static const long ID_STATICTEXT1;
+        static const long ID_CHOICE_PREVIEWS;
+        static const long ID_CHECKBOX_3D;
+        static const long ID_SCROLLBAR1;
+        static const long ID_SCROLLBAR2;
+        static const long ID_PANEL1;
+        static const long ID_SPLITTERWINDOW2;
+        //*)
 
-		static const long ID_TREELISTVIEW_MODELS;
+        static const long ID_TREELISTVIEW_MODELS;
         static const long ID_PREVIEW_REPLACEMODEL;
         static const long ID_PREVIEW_RESET;
         static const long ID_PREVIEW_ALIGN;
@@ -201,54 +200,54 @@ class LayoutPanel: public wxPanel
         static const long ID_ADD_DMX_FLOODLIGHT;
         static const long ID_ADD_DMX_FLOODAREA;
 
-	public:
+    public:
 
-		//(*Handlers(LayoutPanel)
-		void OnPreviewLeftUp(wxMouseEvent& event);
-		void OnPreviewMouseLeave(wxMouseEvent& event);
-		void OnPreviewLeftDown(wxMouseEvent& event);
-		void OnPreviewLeftDClick(wxMouseEvent& event);
-		void OnPreviewRightDown(wxMouseEvent& event);
-		void OnPreviewMouseMove(wxMouseEvent& event);
-		void OnPreviewMouseMove3D(wxMouseEvent& event);
-		void OnPreviewMouseWheel(wxMouseEvent& event);
-		void OnPreviewMouseWheelDown(wxMouseEvent& event);
-		void OnPreviewMouseWheelUp(wxMouseEvent& event);
-		void OnPreviewMagnify(wxMouseEvent& event);
-		void OnPreviewModelPopup(wxCommandEvent &event);
-		void OnCheckBoxOverlapClick(wxCommandEvent& event);
-		void OnButtonSavePreviewClick(wxCommandEvent& event);
-		void OnPropertyGridChange(wxPropertyGridEvent& event);
-		void OnPropertyGridChanging(wxPropertyGridEvent& event);
-		void OnModelSplitterSashPosChanged(wxSplitterEvent& event);
-		void OnSplitterWindowSashPosChanged(wxSplitterEvent& event);
-		void OnNewModelTypeButtonClicked(wxCommandEvent& event);
-		void OnCharHook(wxKeyEvent& event);
-		void OnChar(wxKeyEvent& event);
-		void OnChoiceLayoutGroupsSelect(wxCommandEvent& event);
-		void OnCheckBox_3DClick(wxCommandEvent& event);
-		void OnCheckBox_SelectionClick(wxCommandEvent& event);
-		void OnCheckBox_XZClick(wxCommandEvent& event);
-		void OnPreviewRotateGesture(wxRotateGestureEvent& event);
-		void OnPreviewZoomGesture(wxZoomGestureEvent& event);
-		void OnChoice_InsertObjectSelect(wxCommandEvent& event);
-		void OnChoice_EditModelObjectsSelect(wxCommandEvent& event);
-		void OnNotebook1PageChanged(wxNotebookEvent& event);
-		void OnNotebook_ObjectsPageChanged(wxNotebookEvent& event);
-		//*)
+        //(*Handlers(LayoutPanel)
+        void OnPreviewLeftUp(wxMouseEvent& event);
+        void OnPreviewMouseLeave(wxMouseEvent& event);
+        void OnPreviewLeftDown(wxMouseEvent& event);
+        void OnPreviewLeftDClick(wxMouseEvent& event);
+        void OnPreviewRightDown(wxMouseEvent& event);
+        void OnPreviewMouseMove(wxMouseEvent& event);
+        void OnPreviewMouseMove3D(wxMouseEvent& event);
+        void OnPreviewMouseWheel(wxMouseEvent& event);
+        void OnPreviewMouseWheelDown(wxMouseEvent& event);
+        void OnPreviewMouseWheelUp(wxMouseEvent& event);
+        void OnPreviewMagnify(wxMouseEvent& event);
+        void OnPreviewModelPopup(wxCommandEvent &event);
+        void OnCheckBoxOverlapClick(wxCommandEvent& event);
+        void OnButtonSavePreviewClick(wxCommandEvent& event);
+        void OnPropertyGridChange(wxPropertyGridEvent& event);
+        void OnPropertyGridChanging(wxPropertyGridEvent& event);
+        void OnModelSplitterSashPosChanged(wxSplitterEvent& event);
+        void OnSplitterWindowSashPosChanged(wxSplitterEvent& event);
+        void OnNewModelTypeButtonClicked(wxCommandEvent& event);
+        void OnCharHook(wxKeyEvent& event);
+        void OnChar(wxKeyEvent& event);
+        void OnChoiceLayoutGroupsSelect(wxCommandEvent& event);
+        void OnCheckBox_3DClick(wxCommandEvent& event);
+        void OnCheckBox_SelectionClick(wxCommandEvent& event);
+        void OnCheckBox_XZClick(wxCommandEvent& event);
+        void OnPreviewRotateGesture(wxRotateGestureEvent& event);
+        void OnPreviewZoomGesture(wxZoomGestureEvent& event);
+        void OnChoice_InsertObjectSelect(wxCommandEvent& event);
+        void OnChoice_EditModelObjectsSelect(wxCommandEvent& event);
+        void OnNotebook1PageChanged(wxNotebookEvent& event);
+        void OnNotebook_ObjectsPageChanged(wxNotebookEvent& event);
+        //*)
 
         void OnPropertyGridSelection(wxPropertyGridEvent& event);
         void OnPropertyGridItemCollapsed(wxPropertyGridEvent& event);
         void OnPropertyGridItemExpanded(wxPropertyGridEvent& event);
 
-		DECLARE_EVENT_TABLE()
+        DECLARE_EVENT_TABLE()
 
         void DoCopy(wxCommandEvent& event);
         void DoCut(wxCommandEvent& event);
         void DoPaste(wxCommandEvent& event);
         void DoUndo(wxCommandEvent& event);
-        void DeleteSelectedModels();
-		void DeleteSelectedObject();
+        void DeleteSelectedModel();
+        void DeleteSelectedObject();
         void LockSelectedModels(bool lock);
         void PreviewSaveImage();
         void PreviewPrintImage();
@@ -265,7 +264,6 @@ class LayoutPanel: public wxPanel
         void SelectModelGroupModels(ModelGroup* m, std::list<ModelGroup*>& processed);
         void SelectModel(Model *model, bool highlight_tree = true);
         void UnSelectAllModels(bool addBkgProps = true );
-        void showBackgroundProperties();
         void SelectAllModels();
         void SelectModels(const wxTreeListItems& models);
         void SetupPropGrid(BaseObject *model);
@@ -327,21 +325,6 @@ class LayoutPanel: public wxPanel
         int ModelsSelectedCount() const;
         int ViewObjectsSelectedCount() const;
         int GetSelectedModelIndex() const;
-        Model* GetModelFromTreeItem(wxTreeListItem treeItem);
-        wxTreeListItem GetTreeItemFromModel(Model* model);
-        std::vector<Model*> GetSelectedModelsFromGroup(wxTreeListItem groupItem, bool nested = true);
-        std::vector<Model*> GetSelectedModelsForEdit();
-        void SetTreeModelSelected(Model* model, bool isPrimary);
-        void SetTreeGroupModelsSelected(Model* model, bool isPrimary);
-        void SetTreeSubModelSelected(Model* model, bool isPrimary);
-        std::vector<std::list<std::string>> GetSelectedTreeModelPaths();
-        std::list<std::string> GetTreeItemPath(wxTreeListItem item);
-        wxTreeListItem GetTreeItemBranch(wxTreeListItem parent, std::string branchName);
-        void ReselectTreeModels(std::vector<std::list<std::string>> modelPaths);
-        void SelectModelInTree(Model* modelToSelect);
-        void SelectBaseObjectInTree(BaseObject* baseObjectToSelect);
-        void UnSelectModelInTree(Model* modelToUnSelect);
-        void UnSelectBaseObjectInTree(BaseObject* baseObjectToUnSelect);
         std::list<BaseObject*> GetSelectedBaseObjects() const;
         void PreviewModelAlignWithGround();
         void PreviewModelAlignTops();
@@ -368,20 +351,17 @@ class LayoutPanel: public wxPanel
         bool m_moving_handle;
         bool m_wheel_down;
         bool m_polyline_active;
-		int m_previous_mouse_x, m_previous_mouse_y;
-		int mPointSize;
+        int m_previous_mouse_x, m_previous_mouse_y;
+        int mPointSize;
         int mHitTestNextSelectModelIndex;
         int mNumGroups;
         bool mPropGridActive;
-        wxTreeListItems selectedTreeGroups;
-        wxTreeListItems selectedTreeModels;
-        wxTreeListItems selectedTreeSubModels;
+        wxTreeListItem mSelectedGroup;
 
         wxPropertyGrid *propertyEditor = nullptr;
         bool updatingProperty;
         BaseObject *selectedBaseObject = nullptr;
         BaseObject *highlightedBaseObject = nullptr;
-        wxTreeListItem selectedPrimaryTreeItem = nullptr;
         bool selectionLatched;
         int over_handle;
         glm::vec3 last_centerpos;
@@ -497,8 +477,8 @@ class LayoutPanel: public wxPanel
         static const long ID_MNU_MAKEALLSCNOTOVERLAPPING;
         static const long ID_MNU_ADD_MODEL_GROUP;
         void OnModelsPopup(wxCommandEvent& event);
-		LayoutGroup* GetLayoutGroup(const std::string &name);
-		const wxString& GetBackgroundImageForSelectedPreview();
+        LayoutGroup* GetLayoutGroup(const std::string &name);
+        const wxString& GetBackgroundImageForSelectedPreview();
         void SwitchChoiceToCurrentLayoutGroup();
         void DeleteCurrentPreview();
         void ShowPropGrid(bool show);
